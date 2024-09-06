@@ -1,7 +1,5 @@
-import ConsentForm from "./ConsentForm";
+import CmpApp from "./CmpApp";
 
-function App() {
-  return <ConsentForm />;
+export default function App() {
+  return <CmpApp />;
 }
-
-export default App;

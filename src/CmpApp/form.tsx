@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -13,7 +12,6 @@ import { styled } from "@mui/material/styles";
 const ConsentFormWrapper = styled(Stack)(({ theme }) => ({
   width: "100%",
   maxWidth: "600px",
-  padding: theme.spacing(4),
   gap: theme.spacing(2),
 }));
 
@@ -46,7 +44,7 @@ export default function ConsentForm() {
             autoComplete="current-name"
             autoFocus
             variant="outlined"
-            color={false ? "error" : "primary"}
+            color={"primary"}
             sx={{ ariaLabel: "name" }}
           />
         </FormControl>
@@ -62,7 +60,7 @@ export default function ConsentForm() {
             autoComplete="email"
             autoFocus
             variant="outlined"
-            color={false ? "error" : "primary"}
+            color={"primary"}
             sx={{ ariaLabel: "email" }}
           />
         </FormControl>
