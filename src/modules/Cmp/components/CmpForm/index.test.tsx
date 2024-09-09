@@ -10,9 +10,7 @@ describe("CmpForm", () => {
     return { useCmpFormMutation: () => mutation };
   });
 
-  vi.mock("../../hooks/useCmpFormMutation", () => ({
-    useCmpFormMutation: mocks.useCmpFormMutation,
-  }));
+  vi.mock("../../hooks/useCmpFormMutation", () => mocks);
 
   afterEach(() => {
     vi.resetAllMocks();
@@ -67,7 +65,7 @@ describe("CmpForm", () => {
     ).toBeInTheDocument();
   });
 
-  it("be able to submit the form if it's valid", async () => {
+  it("should be able to submit the form if it's valid", async () => {
     render(<CmpForm />);
 
     const name = screen.getByLabelText(/name/i);
