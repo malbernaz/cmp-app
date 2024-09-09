@@ -1,5 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,14 +8,22 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { useQuery } from "@tanstack/react-query";
 
-import { users } from "../mock-api/data";
+import { getUsers } from "../../../../mock-api";
 
 const ROWS_PER_PAGE = 2;
 
-export default function ConsentsTable() {
+export function CmpUsersTable() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
   const [page, setPage] = React.useState(0);
 
+  if (isLoading) return <CircularProgress />;
+
+  const users = data ?? [];
   const rows = users.slice(
     page * ROWS_PER_PAGE,
     page * ROWS_PER_PAGE + ROWS_PER_PAGE,
@@ -27,7 +36,7 @@ export default function ConsentsTable() {
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Email</TableCell>
-            <TableCell>Consent given for</TableCell>
+            <TableCell>Consents</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
