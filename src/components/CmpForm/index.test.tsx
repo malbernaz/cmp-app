@@ -4,13 +4,13 @@ import "@testing-library/jest-dom/vitest";
 
 import { CmpForm } from ".";
 
-describe("CmpForm", () => {
+describe("Form", () => {
   const mocks = vi.hoisted(() => {
     const mutation = { mutate: vi.fn(), isPending: false };
-    return { useCmpFormMutation: () => mutation };
+    return { useCmpAddUserMutation: () => mutation };
   });
 
-  vi.mock("../../hooks/useCmpFormMutation", () => mocks);
+  vi.mock("../../hooks/useCmpAddUserMutation", () => mocks);
 
   afterEach(() => {
     vi.resetAllMocks();
@@ -90,6 +90,6 @@ describe("CmpForm", () => {
       submit.click();
     });
 
-    expect(mocks.useCmpFormMutation().mutate).toHaveBeenCalledWith(user);
+    expect(mocks.useCmpAddUserMutation().mutate).toHaveBeenCalledWith(user);
   });
 });

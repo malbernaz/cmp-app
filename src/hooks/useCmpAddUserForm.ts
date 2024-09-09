@@ -2,7 +2,7 @@ import { z } from "zod";
 import { useForm, useController } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Consents, ConsentType } from "../../../mock-api";
+import { Consents, ConsentType } from "../mock-api";
 
 const consentFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -16,7 +16,7 @@ const consentFormSchema = z.object({
 
 type ConsentFormInput = z.infer<typeof consentFormSchema>;
 
-export function useCmpForm() {
+export function useCmpAddUserForm() {
   const { control, handleSubmit, formState } = useForm<ConsentFormInput>({
     resolver: zodResolver(consentFormSchema),
     mode: "onChange",

@@ -10,8 +10,8 @@ import MuiCard from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
-import { Consents } from "../../../../mock-api";
-import { useCmpForm, useCmpFormMutation } from "../../hooks";
+import { Consents } from "../../mock-api";
+import { useCmpAddUserForm, useCmpAddUserMutation } from "../../hooks";
 
 const ConsentLabels = {
   [Consents.newsletter]: "Receive newsletter",
@@ -27,8 +27,8 @@ export function CmpForm() {
     consents,
     formState,
     handleConsentsChange,
-  } = useCmpForm();
-  const mutation = useCmpFormMutation();
+  } = useCmpAddUserForm();
+  const mutation = useCmpAddUserMutation();
 
   const isConsentsInErrorState =
     !!consents.fieldState.isDirty && !consents.field?.value.length;

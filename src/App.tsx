@@ -2,7 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
-import { CmpLayout, CmpForm, CmpUsersTable } from "./modules/Cmp";
+import { CmpLayout } from "./layouts/CmpLayout";
+import { CmpForm, CmpUsersTable } from "./components";
 
 const router = createBrowserRouter([
   {

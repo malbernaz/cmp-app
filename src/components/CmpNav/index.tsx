@@ -3,7 +3,7 @@ import MuiTabs from "@mui/material/Tabs";
 import { styled } from "@mui/material/styles";
 import { Link, useLocation } from "react-router-dom";
 
-export function Nav() {
+export function CmpNav() {
   const { pathname } = useLocation();
 
   return (

@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { addUser, User } from "../../../mock-api";
+import { addUser, User } from "../mock-api";
 
-export function useCmpFormMutation() {
+export function useCmpAddUserMutation() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const mutation = useMutation({

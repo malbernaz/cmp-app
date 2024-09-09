@@ -10,7 +10,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useQuery } from "@tanstack/react-query";
 
-import { getUsers } from "../../../../mock-api";
+import { getUsers } from "../../mock-api";
 
 const ROWS_PER_PAGE = 2;
 
