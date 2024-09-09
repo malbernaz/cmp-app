@@ -1,10 +1,8 @@
 import { z } from "zod";
 import { useForm, useController } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 
-import { addUser, Consents, ConsentType } from "../../../mock-api";
+import { Consents, ConsentType } from "../../../mock-api";
 
 const consentFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -16,10 +14,10 @@ const consentFormSchema = z.object({
     .min(1),
 });
 
-type ConsentFormValues = z.infer<typeof consentFormSchema>;
+type ConsentFormInput = z.infer<typeof consentFormSchema>;
 
 export function useCmpForm() {
-  const { control, handleSubmit, formState } = useForm<ConsentFormValues>({
+  const { control, handleSubmit, formState } = useForm<ConsentFormInput>({
     resolver: zodResolver(consentFormSchema),
     mode: "onChange",
   });
@@ -37,23 +35,12 @@ export function useCmpForm() {
         : consents.field.value.filter((v) => v !== consent),
     );
 
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: async (data: ConsentFormValues) => addUser(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      navigate("/consents");
-    },
-  });
-
   return {
     formState,
     handleConsentsChange,
     name,
     email,
     consents,
-    mutation,
-    handleSubmit: handleSubmit((data) => mutation.mutate(data)),
+    handleSubmit,
   };
 }

@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
 import { Consents } from "../../../../mock-api";
-import { useCmpForm } from "../../hooks";
+import { useCmpForm, useCmpFormMutation } from "../../hooks";
 
 const ConsentLabels = {
   [Consents.newsletter]: "Receive newsletter",
@@ -27,14 +27,17 @@ export function CmpForm() {
     consents,
     formState,
     handleConsentsChange,
-    mutation,
   } = useCmpForm();
+  const mutation = useCmpFormMutation();
 
   const isConsentsInErrorState =
     !!consents.fieldState.isDirty && !consents.field?.value.length;
 
   return (
-    <ConsentFormWrapper as="form" onSubmit={handleSubmit}>
+    <ConsentFormWrapper
+      as="form"
+      onSubmit={handleSubmit((data) => mutation.mutate(data))}
+    >
       <Stack direction="row" gap={2}>
         <FormControl fullWidth>
           <FormLabel htmlFor="name">Name</FormLabel>

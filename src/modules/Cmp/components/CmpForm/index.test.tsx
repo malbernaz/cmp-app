@@ -1,86 +1,97 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 
 import { CmpForm } from ".";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const client = new QueryClient();
-const router = createBrowserRouter([
-  { path: "/", element: <CmpForm /> },
-  { path: "/consents", element: <div>user consents table</div> },
-]);
-function renderForm() {
-  return render(
-    <QueryClientProvider client={client}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>,
-  );
-}
 
 describe("CmpForm", () => {
+  const mocks = vi.hoisted(() => {
+    const mutation = { mutate: vi.fn(), isPending: false };
+    return { useCmpFormMutation: () => mutation };
+  });
+
+  vi.mock("../../hooks/useCmpFormMutation", () => ({
+    useCmpFormMutation: mocks.useCmpFormMutation,
+  }));
+
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
+
   it("the form cannot be submitted if it's invalid", () => {
-    renderForm();
-    const submitButton = screen.getByRole("submit");
-    expect(submitButton).toBeDisabled();
+    render(<CmpForm />);
+
+    const submit = screen.getByRole("submit");
+
+    expect(submit).toBeDisabled();
   });
 
   it("should display an error message if the name field is empty", async () => {
-    renderForm();
+    render(<CmpForm />);
+
     const input = screen.getByLabelText(/name/i);
+
     // we actually need to await the act for the validation to run
     await act(() => {
       fireEvent.change(input, { target: { value: "a" } });
       fireEvent.change(input, { target: { value: "" } });
     });
-    const errorMessage = screen.getByText("Name is required");
-    expect(errorMessage).toBeInTheDocument();
+
+    expect(screen.getByText("Name is required")).toBeInTheDocument();
   });
 
   it("should display an error message if the email field is invalid", async () => {
-    renderForm();
+    render(<CmpForm />);
+
     const input = screen.getByLabelText(/email/i);
+
     await act(() => {
       fireEvent.change(input, { target: { value: "not an email" } });
     });
-    const errorMessage = screen.getByText("Invalid email format");
-    expect(errorMessage).toBeInTheDocument();
+
+    expect(screen.getByText("Invalid email format")).toBeInTheDocument();
   });
 
   it("should display an error message if no consents are selected", async () => {
-    renderForm();
+    render(<CmpForm />);
+
     const checkbox = screen.getByLabelText(/newsletter/i);
+
     await act(() => {
       checkbox.click(); // enable
       checkbox.click(); // disable
     });
-    const errorMessage = screen.getByText(
-      "At least one consent must be selected",
-    );
-    expect(errorMessage).toBeInTheDocument();
+
+    expect(
+      screen.getByText("At least one consent must be selected"),
+    ).toBeInTheDocument();
   });
 
   it("be able to submit the form if it's valid", async () => {
-    renderForm();
+    render(<CmpForm />);
 
-    const nameInput = screen.getByLabelText(/name/i);
-    const emailInput = screen.getByLabelText(/email/i);
-    const consentCheckbox = screen.getByLabelText(/newsletter/i);
-    const submitButton = screen.getByRole("submit");
-
-    await act(() => {
-      fireEvent.change(nameInput, { target: { value: "John doe" } });
-      fireEvent.change(emailInput, { target: { value: "john@example.com" } });
-      consentCheckbox.click();
-    });
-
-    expect(submitButton).not.toBeDisabled();
+    const name = screen.getByLabelText(/name/i);
+    const email = screen.getByLabelText(/email/i);
+    const consent = screen.getByLabelText(/newsletter/i);
+    const submit = screen.getByRole("submit");
+    const user = {
+      name: "John doe",
+      email: "john@example.com",
+      consents: ["newsletter"],
+    };
 
     await act(() => {
-      submitButton.click();
+      fireEvent.change(name, { target: { value: user.name } });
+      fireEvent.change(email, { target: { value: user.email } });
+      consent.click();
     });
 
-    expect(screen.getByText("user consents table")).toBeInTheDocument();
+    expect(submit).not.toBeDisabled();
+
+    await act(() => {
+      submit.click();
+    });
+
+    expect(mocks.useCmpFormMutation().mutate).toHaveBeenCalledWith(user);
   });
 });
