@@ -3,6 +3,7 @@ import { useForm, useController } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+
 import { addUser, Consents, ConsentType } from "../../../mock-api";
 
 const consentFormSchema = z.object({

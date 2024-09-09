@@ -1,50 +1,29 @@
-# React + TypeScript + Vite
+# Didomi challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup
 
-Currently, two official plugins are available:
+For this project I decided to use `PNPM` as my package manager, but both `NPM` and `Yarn` should work just fine.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+pnpm install # Install the dependencies
+pnpm dev # Start the development server
+pnpm test # Run the tests
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Stack
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Styles
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+As it was a requirement of the challenge to use a Material UI library, I've chosen to use `MUI` which is the standard in the market and it's backed by Google.
+
+### State management and API communication
+
+Since most of the state management necessary for this project revolves around API interaction, I've chosen to use to use `@tanstack/react-query`, which in my opinion is an excellent library for handling API communication and caching efficiently.
+
+### Form management
+
+For form management I opted to use `react-hook-form` and `zod`. This combination allows for type safe validation with minimal boilerplate.
+
+### Testing
+
+For testing I've used `vitest` and `react-testing-library`.
